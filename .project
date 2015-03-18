@@ -3,6 +3,7 @@
 	<name>AcademiaWEB</name>
 	<comment></comment>
 	<projects>
+		<project>AcademiaEJB</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>
