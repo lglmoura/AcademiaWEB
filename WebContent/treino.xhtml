@@ -1,0 +1,173 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+<h:head>
+	<title>Gerenciador de Treinos</title>
+	<link type="text/css" rel="stylesheet" href="dot-luv/skin.css" />
+</h:head>
+<h:body>
+	<p:fieldset legend="Gerenciar Treino" toggleable="true"
+		toggleSpeed="500">
+		<h:form id="form">
+			<center>
+				<p:dataTable id="tabela" var="treino" value="#{treinoMB.allTreino}"
+					rowKey="#{treino.uid}" selectionMode="single" scrollable="true"
+					scrollHeight="300" scrollWidth="850"
+					selection="#{treinoMB.treinoSelecionado}">
+					<p:column headerText="Codigo" width="150">
+						<h:outputText value="#{treino.uid}" />
+					</p:column>
+					<p:column headerText="Nome">
+						<h:outputText value="#{treino.aluno.nome}" />
+					</p:column>
+				</p:dataTable>
+			</center>
+		</h:form>
+		<center>
+			<p:commandButton value="Cadastrar" icon="ui-icon-document"
+				update=":ftreino:displayCadastro" oncomplete="cadastro.show()" />
+			<p:commandButton value="Alterar" icon="ui-icon-search"
+				oncomplete="altera.show()" update=":ftreinoA:displayaltera" />
+			<p:commandButton value="Deletar" icon="ui-icon-disk"
+				oncomplete="deleta.show()" update=":displaydeleta" />
+		</center>
+	</p:fieldset>
+	<p:growl id="menssagem" showDetail="true" life="3000" for="msg" />
+	<!--............................................................................DIALOGOS E FUNÇÕES-->
+	<!--CADASTRO Treino-->
+	<p:dialog id="dialogCadastro" header="Cadastro de Treino"
+		widgetVar="cadastro" resizable="false" width="500" showEffect="clip"
+		hideEffect="explode">
+		<h:form id="ftreino">
+			<h:panelGrid id="displayCadastro" border='1' columns="2"
+				styleClass="panelGrid" rowClasses="panelFirstLine,panelNextLine">
+
+				<h:outputLabel value="Codigo" />
+				<p:inputText value="#{treinoMB.treino.uid}" style=" width : 325px;" />
+
+				<h:outputLabel value="Dia de Inicio" />
+				<p:calendar size="12" id="datainicio" pattern="dd/MM/yyyy"
+					value="#{treinoMB.treino.datainicio}" />
+
+				<h:outputLabel value="Dia da Semana" />
+				<h:selectOneMenu value="#{treinoMB.treino.dia}" id="timeFutebol">
+					<f:selectItem itemValue="Segunda" />
+					<f:selectItem itemValue="Terça" />
+					<f:selectItem itemValue="Quarta" />
+					<f:selectItem itemValue="Quinta" />
+					<f:selectItem itemValue="Sexta" />
+					<f:selectItem itemValue="Sabado" />
+				</h:selectOneMenu>
+
+				<h:outputLabel value="Horario" />
+				<p:calendar id="time" value="#{treinoMB.treino.horainicio}"
+					pattern="HH:mm a" timeOnly="true" />
+
+				<h:outputLabel value="Aluno" />
+				<p:selectOneMenu id="aluno" value="#{treinoMB.treino.aluno}"
+					converter="entityConverter" filter="true"
+					filterMatchMode="startsWith">
+					<f:selectItem itemValue="" itemLabel="Selecione Aluno" />
+					<f:selectItems value="#{treinoMB.allAluno}" var="alunoi"
+						itemLabel="#{alunoi.nome}" itemValue="#{alunoi}" />
+
+				</p:selectOneMenu>
+
+				<h:outputLabel value="Modalidade" />
+				<p:selectOneMenu id="modalidade"
+					value="#{treinoMB.treino.modalidade}" converter="entityConverter"
+					filter="true" filterMatchMode="startsWith">
+					<f:selectItem itemValue="" itemLabel="Selecione modalidade" />
+					<f:selectItems value="#{treinoMB.allModalidade}" var="modalidadei"
+						itemLabel="#{modalidadei.descricao}" itemValue="#{modalidadei}" />
+
+				</p:selectOneMenu>
+
+
+				<p:commandButton value="Salvar" 
+					action="#{treinoMB.salva()}" update=":form:tabela,:menssagem" />
+			</h:panelGrid>
+			<br />
+		</h:form>
+	</p:dialog>
+	<script type="text/javascript">
+function camposObrigatorios() {
+jQuery('#form2').effect("shake", { times:3 }, 100);
+}
+</script>
+	<!-- Altera -->
+	<p:dialog id="dialogaltera" header="Altera" widgetVar="altera"
+		resizable="false" width="500" showEffect="clip" hideEffect="explode">
+		<h:form id="ftreinoA">
+			<h:panelGrid id="displayaltera" border='1' columns="2"
+				styleClass="panelGrid" rowClasses="panelFirstLine,panelNextLine">
+				<h:outputLabel value="Codigo" />
+				<p:inputText value="#{treinoMB.treinoSelecionado.uid}"
+					style=" width : 325px;" />
+				<h:outputLabel value="Dia de Inicio" />
+				<p:calendar size="12" id="datainicio" pattern="dd/MM/yyyy"
+					value="#{treinoMB.treinoSelecionado.datainicio}" />
+
+				<h:outputLabel value="Dia da Semana" />
+				
+				<h:selectOneMenu value="#{treinoMB.treinoSelecionado.dia}"
+					id="timeFutebol">
+					<f:selectItem itemValue="Segunda" />
+					<f:selectItem itemValue="Terça" />
+					<f:selectItem itemValue="Quarta" />
+					<f:selectItem itemValue="Quinta" />
+					<f:selectItem itemValue="Sexta" />
+					<f:selectItem itemValue="Sabado" />
+				</h:selectOneMenu>
+
+				<h:outputLabel value="Horario" />
+				<p:calendar id="time"
+					value="#{treinoMB.treinoSelecionado.horainicio}" pattern="HH:mm a"
+					timeOnly="true" />
+
+				<h:outputLabel value="Aluno" />
+				<p:selectOneMenu id="aluno"
+					value="#{treinoMB.treinoSelecionado.aluno}"
+					converter="entityConverter" filter="true"
+					filterMatchMode="startsWith">
+					<f:selectItem itemValue="" itemLabel="Selecione Aluno" />
+					<f:selectItems value="#{treinoMB.allAluno}" var="aluno"
+						itemLabel="#{aluno.nome}" itemValue="#{aluno}" />
+
+				</p:selectOneMenu>
+
+
+				<h:outputLabel value="Modalidade" />
+				<p:selectOneMenu id="modalidade"
+					value="#{treinoMB.treinoSelecionado.modalidade}"
+					converter="entityConverter" filter="true"
+					filterMatchMode="startsWith">
+					<f:selectItem itemValue="" itemLabel="Selecione modalidade" />
+					<f:selectItems value="#{treinoMB.allModalidade}" var="modalidade"
+						itemLabel="#{modalidade.descricao}" itemValue="#{modalidade}" />
+
+				</p:selectOneMenu>
+
+				<p:commandButton value="Alterar" icon="ui-icon-search"
+					action="#{treinoMB.update()}" update=":form:tabela,:menssagem" />
+			</h:panelGrid>
+			<br />
+		</h:form>
+	</p:dialog>
+	<!--DELEÇÂO DE CONTATO-->
+	<p:dialog id="dialogDeleta" header="Deletar Treino" widgetVar="deleta"
+		width="500" showEffect="clip" hideEffect="fold">
+		<h:panelGrid id="displaydeleta" columns="2" cellpadding="4">
+			<h:outputText value="Deseja exluir realmente o Treino?" />
+			<br />
+			<p:commandButton value="Sim" action="#{treinoMB.delete()}"
+				update=":form:tabela,:menssagem" />
+			<p:commandButton value="Não" oncomplete="deleta.hide()"
+				update=":form:tabela,:menssagem" />
+		</h:panelGrid>
+	</p:dialog>
+</h:body>
+</html>
