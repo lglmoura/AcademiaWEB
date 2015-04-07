@@ -64,7 +64,9 @@
 
 				<h:outputLabel value="Horario" />
 				<p:calendar id="time" value="#{treinoMB.treino.horainicio}"
-					pattern="HH:mm a" timeOnly="true" />
+					pattern="HH:mm" timeOnly="true">
+					<f:converter converterId="timestampConverter" />
+				</p:calendar>
 
 				<h:outputLabel value="Aluno" />
 				<p:selectOneMenu id="aluno" value="#{treinoMB.treino.aluno}"
@@ -87,8 +89,8 @@
 				</p:selectOneMenu>
 
 
-				<p:commandButton value="Salvar" 
-					action="#{treinoMB.salva()}" update=":form:tabela,:menssagem" />
+				<p:commandButton value="Salvar" action="#{treinoMB.salva()}"
+					update=":form:tabela,:menssagem" />
 			</h:panelGrid>
 			<br />
 		</h:form>
@@ -107,12 +109,13 @@ jQuery('#form2').effect("shake", { times:3 }, 100);
 				<h:outputLabel value="Codigo" />
 				<p:inputText value="#{treinoMB.treinoSelecionado.uid}"
 					style=" width : 325px;" />
+
 				<h:outputLabel value="Dia de Inicio" />
 				<p:calendar size="12" id="datainicio" pattern="dd/MM/yyyy"
 					value="#{treinoMB.treinoSelecionado.datainicio}" />
 
 				<h:outputLabel value="Dia da Semana" />
-				
+
 				<h:selectOneMenu value="#{treinoMB.treinoSelecionado.dia}"
 					id="timeFutebol">
 					<f:selectItem itemValue="Segunda" />
@@ -125,8 +128,10 @@ jQuery('#form2').effect("shake", { times:3 }, 100);
 
 				<h:outputLabel value="Horario" />
 				<p:calendar id="time"
-					value="#{treinoMB.treinoSelecionado.horainicio}" pattern="HH:mm a"
-					timeOnly="true" />
+					value="#{treinoMB.treinoSelecionado.horainicio}" pattern="HH:mm"
+					timeOnly="true">
+					<f:converter converterId="timestampConverter" />
+				</p:calendar>
 
 				<h:outputLabel value="Aluno" />
 				<p:selectOneMenu id="aluno"
